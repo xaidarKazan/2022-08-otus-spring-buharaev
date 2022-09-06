@@ -23,18 +23,24 @@ public class TestQuestionDaoCSV implements TestQuestionDao {
     }
     @Override
     public List<TestQuestion> getAll() {
-        List<TestQuestion> allQuestions;
         Resource resource = new ClassPathResource(csvPath);
+        ArrayList<TestQuestion> allQuestions;
         if (resource == null) {
             throw new IllegalArgumentException("CSV file not found!");
         } else {
             allQuestions = new ArrayList<>();
             try(FileReader fr = new FileReader(resource.getFile());
-                    CSVReader reader = new CSVReader(fr)) {
+                CSVReader reader = new CSVReader(fr)) {
                 String[] textLines;
                 while ((textLines = reader.readNext()) != null) {
                     TestQuestion testQuestion = new TestQuestion();
-                    /* some code */
+                    testQuestion.setText(textLines[0]);
+                    testQuestion.setCorrectAnswer(textLines[1]);
+                    if(textLines.length > 2) {
+                        String[] answerOptions = new String[textLines.length - 1];
+                        System.arraycopy(textLines, 1, answerOptions, 0, textLines.length - 1);
+                        testQuestion.setAnswerOptions(Arrays.asList(answerOptions));
+                    }
                     allQuestions.add(testQuestion);
                 }
             }  catch (IOException e) {

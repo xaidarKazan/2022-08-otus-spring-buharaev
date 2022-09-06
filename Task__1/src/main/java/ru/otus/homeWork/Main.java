@@ -13,7 +13,8 @@ public class Main {
 
         TestQuestionService service = context.getBean(TestQuestionService.class);
         List<TestQuestion> testQuestionList = service.getAllQuestions();
-
-
+        for(TestQuestion tq : testQuestionList) {
+            tq.println();
+        }
     }
 }

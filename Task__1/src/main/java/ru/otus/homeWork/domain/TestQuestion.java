@@ -2,7 +2,9 @@ package ru.otus.homeWork.domain;
 
 import lombok.Data;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class TestQuestion {
@@ -33,5 +35,15 @@ public class TestQuestion {
 
     public void setAnswerOptions(List<String> answerOptions) {
         this.answerOptions = answerOptions;
+    }
+
+    public void println() {
+        System.out.println(getText());
+        if(answerOptions != null) {
+            Collections.shuffle(answerOptions);
+            AtomicInteger i = new AtomicInteger();
+            answerOptions.stream().forEach(option -> System.out.println(i.incrementAndGet() + ") " + option));
+        }
+        System.out.println();
     }
 }
