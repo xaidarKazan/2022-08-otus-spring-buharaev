@@ -1,13 +1,11 @@
 package ru.otus.homeWork.domain;
 
-import lombok.Data;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class TestQuestion {
+public class Question {
 
     private String text;
     private String correctAnswer;

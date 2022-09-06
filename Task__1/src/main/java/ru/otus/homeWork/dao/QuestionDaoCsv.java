@@ -4,27 +4,24 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import ru.otus.homeWork.domain.TestQuestion;
+import ru.otus.homeWork.domain.Question;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestQuestionDaoCSV implements TestQuestionDao {
+public class QuestionDaoCsv implements QuestionDao {
     private final String csvPath;
 
-    public TestQuestionDaoCSV(String csvPath) {
+    public QuestionDaoCsv(String csvPath) {
         this.csvPath = csvPath;
     }
     @Override
-    public List<TestQuestion> getAll() {
+    public List<Question> getAll() {
         Resource resource = new ClassPathResource(csvPath);
-        ArrayList<TestQuestion> allQuestions;
+        ArrayList<Question> allQuestions;
         if (resource == null) {
             throw new IllegalArgumentException("CSV file not found!");
         } else {
@@ -33,15 +30,15 @@ public class TestQuestionDaoCSV implements TestQuestionDao {
                 CSVReader reader = new CSVReader(fr)) {
                 String[] textLines;
                 while ((textLines = reader.readNext()) != null) {
-                    TestQuestion testQuestion = new TestQuestion();
-                    testQuestion.setText(textLines[0]);
-                    testQuestion.setCorrectAnswer(textLines[1]);
+                    Question question = new Question();
+                    question.setText(textLines[0]);
+                    question.setCorrectAnswer(textLines[1]);
                     if(textLines.length > 2) {
                         String[] answerOptions = new String[textLines.length - 1];
                         System.arraycopy(textLines, 1, answerOptions, 0, textLines.length - 1);
-                        testQuestion.setAnswerOptions(Arrays.asList(answerOptions));
+                        question.setAnswerOptions(Arrays.asList(answerOptions));
                     }
-                    allQuestions.add(testQuestion);
+                    allQuestions.add(question);
                 }
             }  catch (IOException e) {
                 throw new RuntimeException(e);
