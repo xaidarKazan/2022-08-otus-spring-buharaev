@@ -3,6 +3,7 @@ package ru.otus.homeWork.dao;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import ru.otus.homeWork.domain.TestQuestion;
 
 import java.io.FileNotFoundException;
@@ -23,20 +24,12 @@ public class TestQuestionDaoCSV implements TestQuestionDao {
     @Override
     public List<TestQuestion> getAll() {
         List<TestQuestion> allQuestions;
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(csvPath);
+        Resource resource = new ClassPathResource(csvPath);
         if (resource == null) {
             throw new IllegalArgumentException("CSV file not found!");
         } else {
             allQuestions = new ArrayList<>();
-            try(FileReader fr = new FileReader(String.valueOf(resource));){
-
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try(FileReader fr = new FileReader(String.valueOf(resource));
+            try(FileReader fr = new FileReader(resource.getFile());
                     CSVReader reader = new CSVReader(fr)) {
                 String[] textLines;
                 while ((textLines = reader.readNext()) != null) {
