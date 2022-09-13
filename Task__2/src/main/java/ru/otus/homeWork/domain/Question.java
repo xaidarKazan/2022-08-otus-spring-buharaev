@@ -1,15 +1,14 @@
 package ru.otus.homeWork.domain;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Question {
 
     private String text;
     private String correctAnswer;
-    private List<String> answerOptions;
+    private List<String> answerOptions = new ArrayList<>();
 
     public String getText() {
         return text;
@@ -20,7 +19,8 @@ public class Question {
     }
 
     public String getCorrectAnswer() {
-        return correctAnswer;
+        int correctAnswerPosition = answerOptions.indexOf(correctAnswer);
+        return correctAnswerPosition == -1 ? correctAnswer : String.valueOf(correctAnswerPosition + 1);
     }
 
     public void setCorrectAnswer(String correctAnswer) {
@@ -33,15 +33,5 @@ public class Question {
 
     public void setAnswerOptions(List<String> answerOptions) {
         this.answerOptions = answerOptions;
-    }
-
-    public void println() {
-        System.out.println(getText());
-        if(answerOptions != null) {
-            Collections.shuffle(answerOptions);
-            AtomicInteger i = new AtomicInteger();
-            answerOptions.stream().forEach(option -> System.out.println(i.incrementAndGet() + ") " + option));
-        }
-        System.out.println();
     }
 }

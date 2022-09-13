@@ -5,5 +5,5 @@ import ru.otus.homeWork.domain.Question;
 import java.util.List;
 
 public interface QuestionDao {
-    List<Question> getAll();
+    List<Question> getAllQuestions();
 }

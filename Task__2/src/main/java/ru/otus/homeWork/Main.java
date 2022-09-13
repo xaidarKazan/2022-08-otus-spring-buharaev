@@ -1,19 +1,15 @@
 package ru.otus.homeWork;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ru.otus.homeWork.domain.Question;
-import ru.otus.homeWork.service.QuestionService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import ru.otus.homeWork.service.TestApplicationService;
 
-import java.util.List;
-
+@ComponentScan
 public class Main {
     public static void main( String[] args ) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
 
-        QuestionService service = context.getBean(QuestionService.class);
-        List<Question> questionList = service.getAllQuestions();
-        for(Question tq : questionList) {
-            tq.println();
-        }
+        TestApplicationService testApp = context.getBean(TestApplicationService.class);
+        testApp.run();
     }
 }
