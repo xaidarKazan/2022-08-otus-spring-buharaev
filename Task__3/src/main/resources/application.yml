@@ -1,0 +1,10 @@
+spring:
+  banner:
+    location: banner.txt
+  messages:
+    basename: "questionText/appmessages"
+    encoding: "UTF-8"
+
+testing-app:
+  message: "Translation to Russian"
+  locale: ru_RU
