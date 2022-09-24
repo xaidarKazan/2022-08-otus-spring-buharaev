@@ -2,6 +2,7 @@ package ru.otus.homeWork.service.impl;
 
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.homeWork.configuration.TestingAppProps;
 import ru.otus.homeWork.dao.QuestionDao;
 import ru.otus.homeWork.domain.Question;
 import ru.otus.homeWork.service.ObserverService;
@@ -24,18 +25,21 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final MessageSource messageSource;
 
-    public QuestionServiceImpl(QuestionDao dao, ObserverService observerService, TestingData testingData, MessageSource messageSource) {
+    private final TestingAppProps testingAppProps;
+
+    public QuestionServiceImpl(QuestionDao dao, ObserverService observerService, TestingData testingData, MessageSource messageSource, TestingAppProps testingAppProps) {
         this.dao = dao;
         this.observerService = observerService;
         this.testingData = testingData;
         this.messageSource = messageSource;
+        this.testingAppProps = testingAppProps;
     }
 
     @Override
-    public void startingToTest(Locale locale) {
+    public void startingToTest() {
         List<Question> questionList = dao.getAllQuestions();
         for(Question question : questionList) {
-            printQuestionAndOptions(question, locale);
+            printQuestionAndOptions(question, testingAppProps.getLocale());
             boolean isAnswerCorrect = observerService.checkAnswer(question.getCorrectAnswer());
             testingData.scoreCounter(isAnswerCorrect);
         }
