@@ -1,4 +1,5 @@
 *.iml
+spring-shell.log
 .idea/
 target/
 out/
