@@ -1,0 +1,13 @@
+spring:
+  banner:
+    location: banner.txt
+  messages:
+    basename: "questionText/appmessages"
+    encoding: "UTF-8"
+  main:
+    allow-circular-references: true
+
+testing-app:
+  message: "Translation to Russian"
+  locale: ru_RU
+
