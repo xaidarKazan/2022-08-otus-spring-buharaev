@@ -1,4 +1,4 @@
-package ru.otus.homeWork.commandlinerunners;
+package ru.otus.homeWork.shellservice;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
