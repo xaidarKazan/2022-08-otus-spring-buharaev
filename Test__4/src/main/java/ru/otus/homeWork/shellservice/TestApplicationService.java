@@ -33,20 +33,11 @@ public class TestApplicationService /*implements CommandLineRunner*/ {
         testingStage = ApplicationStage.LOGGED;
     }
 
-    private Availability isLoginCommandAvailable() {
-        return testingStage != ApplicationStage.LOGOUT ? Availability.unavailable("Вы зарегестрированы.") : Availability.available();
-    }
-
     @ShellMethod(value = "To start testing", key = {"test", "testing"})
     @ShellMethodAvailability(value = "isStartTestCommandAvailable")
     public void startTest() {
         questionService.startingToTest();
         testingStage = ApplicationStage.TESTED;
-    }
-
-    private Availability isStartTestCommandAvailable() {
-        return testingStage == ApplicationStage.TESTED ? Availability.unavailable("Вы уже прошли тестирование!") :
-                testingStage == ApplicationStage.LOGOUT ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
     }
 
     @ShellMethod(value = "View results", key = {"result", "results"})
@@ -55,13 +46,22 @@ public class TestApplicationService /*implements CommandLineRunner*/ {
         testingData.getResult();
     }
 
-    private Availability isGetResultCommandAvailable() {
-        return testingStage == ApplicationStage.TESTED ? Availability.available() :
-                testingStage == ApplicationStage.LOGOUT ? Availability.unavailable("Сначала залогиньтесь") : Availability.unavailable("Вам необходимо пройти тест.");
-    }
-
     @ShellMethod(value = "Logout", key = {"out", "logout"})
     public void logout() {
         testingStage = ApplicationStage.LOGOUT;
+    }
+
+    private Availability isLoginCommandAvailable() {
+        return testingStage != ApplicationStage.LOGOUT ? Availability.unavailable("Вы зарегестрированы.") : Availability.available();
+    }
+
+    private Availability isStartTestCommandAvailable() {
+        return testingStage == ApplicationStage.TESTED ? Availability.unavailable("Вы уже прошли тестирование!") :
+                testingStage == ApplicationStage.LOGOUT ? Availability.unavailable("Сначала залогиньтесь") : Availability.available();
+    }
+
+    private Availability isGetResultCommandAvailable() {
+        return testingStage == ApplicationStage.TESTED ? Availability.available() :
+                testingStage == ApplicationStage.LOGOUT ? Availability.unavailable("Сначала залогиньтесь") : Availability.unavailable("Вам необходимо пройти тест.");
     }
 }
