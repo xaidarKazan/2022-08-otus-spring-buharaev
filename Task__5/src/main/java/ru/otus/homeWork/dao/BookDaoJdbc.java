@@ -37,13 +37,20 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public Book getById(long id) {
-        String query = "select id, name, publishingYear, author_id, genre_id from BOOK where id = :id";
+        String query = "select b.id, b.name, b.publishingYear, b.author_id, b.genre_id, a.firstName, a.lastName, g.name gName " +
+                       "from BOOK b " +
+                       "join AUTHOR a on a.id = b.author_id " +
+                       "join GENRE g on g.id = b.genre_id " +
+                       "where b.id = :id ";
         return jdbcTemplate.queryForObject(query, Map.of("id", id),new BookRowMapper());
     }
 
     @Override
     public List<Book> getAll() {
-        String query = "select id, name, publishingYear, author_id, genre_id from BOOK";
+        String query = "select b.id, b.name, b.publishingYear, b.author_id, b.genre_id, a.firstName, a.lastName, g.name gName " +
+                       "from BOOK b " +
+                       "join AUTHOR a on a.id = b.author_id " +
+                       "join GENRE g on g.id = b.genre_id " ;
         return jdbcTemplate.query(query, new EmptySqlParameterSource(), new BookRowMapper());
     }
 
@@ -61,9 +68,12 @@ public class BookDaoJdbc implements BookDao {
                                  .publishingYear(rs.getInt("publishingYear"))
                                  .author(Author.builder()
                                                .id(rs.getLong("author_id"))
+                                               .firstName(rs.getString("firstName"))
+                                               .lastName(rs.getString("lastName"))
                                                .build())
                                  .genre(Genre.builder()
                                              .id(rs.getLong("genre_id"))
+                                             .name(rs.getString("gName"))
                                              .build())
                                  .build();
         }
