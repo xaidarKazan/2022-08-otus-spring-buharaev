@@ -7,7 +7,6 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homeWork.domain.Genre;
 import ru.otus.homeWork.repositories.GenreRepository;
-
 @ShellComponent
 @ShellCommandGroup(value = "CRUD for genre")
 @RequiredArgsConstructor
