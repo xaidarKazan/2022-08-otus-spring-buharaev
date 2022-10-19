@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.homeWork.dao.AuthorDao;
+import ru.otus.homeWork.repositories.AuthorDao;
 import ru.otus.homeWork.domain.Author;
 
 @ShellComponent

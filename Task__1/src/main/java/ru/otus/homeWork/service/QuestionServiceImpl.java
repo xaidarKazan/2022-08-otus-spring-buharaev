@@ -1,6 +1,6 @@
 package ru.otus.homeWork.service;
 
-import ru.otus.homeWork.dao.QuestionDao;
+import ru.otus.homeWork.repositories.QuestionDao;
 import ru.otus.homeWork.domain.Question;
 
 import java.util.List;

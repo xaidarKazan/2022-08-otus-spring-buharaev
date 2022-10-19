@@ -3,7 +3,7 @@ package ru.otus.homeWork.service.impl;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.homeWork.configuration.TestingAppProps;
-import ru.otus.homeWork.dao.QuestionDao;
+import ru.otus.homeWork.repositories.QuestionDao;
 import ru.otus.homeWork.domain.Question;
 import ru.otus.homeWork.service.ObserverService;
 import ru.otus.homeWork.service.QuestionService;
