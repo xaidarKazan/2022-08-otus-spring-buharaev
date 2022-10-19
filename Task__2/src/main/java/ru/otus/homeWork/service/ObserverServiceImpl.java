@@ -2,7 +2,7 @@ package ru.otus.homeWork.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.homeWork.dao.QuestionDao;
+import ru.otus.homeWork.repositories.QuestionDao;
 
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
