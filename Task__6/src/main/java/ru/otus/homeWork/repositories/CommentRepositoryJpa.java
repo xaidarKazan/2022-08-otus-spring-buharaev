@@ -5,11 +5,13 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homeWork.domain.Comment;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Repository
 @AllArgsConstructor
 public class CommentRepositoryJpa implements CommentRepository{
 
+    @PersistenceContext
     private final EntityManager em;
 
     @Override

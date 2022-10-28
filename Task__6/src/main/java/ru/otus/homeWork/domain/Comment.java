@@ -20,8 +20,7 @@ public class Comment {
     @Column(name="CONTENT", nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "BOOK_ID")
-    @ToString.Exclude
     private Book book;
 }

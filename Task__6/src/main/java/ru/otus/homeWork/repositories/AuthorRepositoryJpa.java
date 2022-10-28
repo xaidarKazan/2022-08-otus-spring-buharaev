@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homeWork.domain.Author;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -13,11 +14,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorRepositoryJpa implements AuthorRepository {
 
+    @PersistenceContext
     private final EntityManager em;
 
     @Override
     public long getAuthorsCount() {
-        return getAll().size();
+        TypedQuery<Long> query = em.createQuery("select count(a.id) from Author a ", Long.class);
+        return query.getSingleResult();
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.homeWork.domain.Genre;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -12,11 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreRepositoryJpa implements GenreRepository {
 
+    @PersistenceContext
     private final EntityManager em;
 
     @Override
     public long getGenresCount() {
-        return getAll().size();
+        TypedQuery<Long> query = em.createQuery("select count(g.id) from Genre g ", Long.class);
+        return query.getSingleResult();
     }
 
     @Override

@@ -25,18 +25,16 @@ public class Book {
     @Column(name = "publishingyear", nullable = false)
     private Integer publishingYear;
 
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @ToString.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
     @ToString.Exclude
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 }
