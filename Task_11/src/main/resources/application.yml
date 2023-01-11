@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      database: library
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package: ru.otus.homeWork.mongock.changelog
