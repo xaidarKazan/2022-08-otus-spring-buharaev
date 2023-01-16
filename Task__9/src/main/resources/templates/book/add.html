@@ -1,0 +1,53 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Электронная библиотека</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div id="container">
+        <div id="header">Электронная библиотека</div>
+        <div id="sidebar">
+            <p><a class="button" href="/">Главная</a></p>
+        </div>
+        <div id="content">
+            <form id="save-form" action="/book/add" method="post" >
+                <table>
+                    <tr>
+                        <td><label>Название</label></td>
+                        <td><input type="text" name="name" required /></td></td>
+                    </tr>
+                    <tr>
+                        <td><label>Год выпуска</label></td>
+                        <td><input type="text" name="publishingYear" required /></td></td>
+                    </tr>
+                    <tr>
+                        <td><label>Автор</label></td>
+                        <td>
+                            <select name="authorId" required>
+                                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.firstName} + ' ' + ${author.lastName}">
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Жанр</label></td>
+                        <td>
+                            <select name="genreId" required>
+                                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}" >
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit">Сохранить</button>
+                            <a href="" th:href="@{/book}">
+                                <button type="button">Отменить</button>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
