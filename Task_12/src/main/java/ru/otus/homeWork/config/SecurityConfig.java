@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe().tokenValiditySeconds(60*60)
                 .and()
-                .logout().deleteCookies("JSESSIONID").permitAll();
+                .logout().permitAll();
     }
 
     @Override
