@@ -35,4 +35,10 @@ public class GenreController {
         Genre genre = genreRepo.findById(id).orElseThrow();
         genreRepo.delete(genre);
     }
+
+    @GetMapping("api/genres/accessToEdit")
+    public void hasAccessToEdit() {}
+
+    @GetMapping("/api/genres/accessToDelete")
+    public void hasAccessToDelete() {}
 }

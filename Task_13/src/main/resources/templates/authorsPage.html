@@ -7,17 +7,30 @@
     <script type="text/javascript"> 
         window.authors = null;
         window.listTable = null;
+        window.isAlowedToEdite = false;
+        window.isAlowedToDelete = false;
         
-        function viewList() {
-          fetch('/api/authors')
-            .then((response) => response.json())
-            .then((list) => {
-                    window.authors = list;
-                    window.listTable = document.getElementById('listTable');
-                    for(author of list) {
-                        addRow(author);
-                    }
-                });
+        function getDataAndAlowedActions() {
+            fetch('api/authors/accessToEdit').then(resp => {
+                                                    if(resp.ok) {
+                                                        window.isAlowedToEdite = true;
+                                                        document.getElementById('addButton').style.display = 'inline-block';
+                                                    }
+                                                });
+            fetch('/api/authors/accessToDelete').then(resp => {
+                                                    if(resp.ok) {
+                                                        window.isAlowedToDelete = true;
+                                                    }
+                                                });            
+            
+            fetch('/api/authors').then((response) => response.json())
+                                 .then((list) => {
+                                         window.authors = list;
+                                         window.listTable = document.getElementById('listTable');
+                                         for(author of list) {
+                                            addRow(author);
+                                         }
+                                     });
         }
         
         function addRow(author) {            
@@ -30,8 +43,9 @@
             td = document.createElement('td');
             td.innerHTML = author.firstName + ' ' + author.lastName;
             tr.appendChild(td);
+            
             td = document.createElement('td');
-            td.setAttribute('align', 'center');
+            td.setAttribute('align', 'center'); 
             for(let i = 1; i < 3; i++) {
                 let a = document.createElement('a');  
                 a.style.cursor = 'pointer'; 
@@ -47,9 +61,13 @@
                 }
 
                 a.appendChild(img);
-                td.appendChild(a);
-            }                        
-            tr.appendChild(td);
+                if((window.isAlowedToEdite == true && i == 1) || (window.isAlowedToDelete == true && i == 2)) {
+                    td.appendChild(a);                    
+                }
+            }
+            if(window.isAlowedToEdite == true || window.isAlowedToDelete == true) {                                        
+                tr.appendChild(td);
+            }            
             window.listTable.appendChild(tr);
         }
         
@@ -157,7 +175,7 @@
     </script>
     
 </head>
-<body onload="viewList()"> 
+<body onload="getDataAndAlowedActions()"> 
     <div id="container">
         <div id="header">Электронная библиотека</div>
         <div id="sidebar">
@@ -165,7 +183,7 @@
         </div>
         <div id="content">
             <div id="addB">
-                <a class="button" title="Добавить" onclick="form()">Добавить</a>
+                <a class="button" id="addButton" title="Добавить" onclick="form()" style="display: none;">Добавить</a>
             </div>       
             
             <div id="list" style="display: block;">

@@ -52,4 +52,10 @@ public class BookController {
         Book book = bookRepo.findById(id).orElseThrow();
         bookRepo.delete(book);
     }
+
+    @GetMapping("api/books/accessToEdit")
+    public void hasAccessToEdit() {}
+
+    @GetMapping("/api/books/accessToDelete")
+    public void hasAccessToDelete() {}
 }

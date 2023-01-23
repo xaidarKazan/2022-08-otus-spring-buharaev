@@ -36,4 +36,10 @@ public class AuthorController {
         Author author = authorRepo.findById(id).orElseThrow();
         authorRepo.delete(author);
     }
+
+    @GetMapping("api/authors/accessToEdit")
+    public void hasAccessToEdit() {}
+
+    @GetMapping("/api/authors/accessToDelete")
+    public void hasAccessToDelete() {}
 }

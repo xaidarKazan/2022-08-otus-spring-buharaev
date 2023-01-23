@@ -19,15 +19,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers( "/login" ).permitAll()
+                    .authorizeRequests().antMatchers( "/login" ).permitAll()
                 .and()
-                .authorizeRequests().antMatchers( "/**" ).authenticated()
+                    .authorizeRequests().antMatchers("/api/authors/accessToEdit").hasAnyRole("MANAGER", "ADMIN")
                 .and()
-                .formLogin().permitAll()
+                    .authorizeRequests().antMatchers("/api/authors/accessToDelete").hasRole("ADMIN")
                 .and()
-                .rememberMe().tokenValiditySeconds(60*60)
+                    .authorizeRequests().antMatchers("/api/genres/accessToEdit").hasAnyRole("MANAGER", "ADMIN")
                 .and()
-                .logout().permitAll();
+                    .authorizeRequests().antMatchers("/api/genres/accessToDelete").hasRole("ADMIN")
+                .and()
+                    .authorizeRequests().antMatchers("/api/books/accessToEdit").hasAnyRole("MANAGER", "ADMIN")
+                .and()
+                    .authorizeRequests().antMatchers("/api/books/accessToDelete").hasRole("ADMIN")
+                .and()
+                    .authorizeRequests().antMatchers( "/**" ).authenticated()
+
+                .and()
+                    .formLogin().permitAll()
+                .and()
+                    .rememberMe().tokenValiditySeconds(60*60)
+                .and()
+                    .logout().permitAll();
     }
 
     @Override

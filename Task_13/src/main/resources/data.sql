@@ -1,10 +1,10 @@
-insert into USER (id, login, password) values (1, 'Aidar', '$2a$12$MvEg4g0CRKsOllC34FG0BugA/HWCZxm9BUeg/y8yUiR8FQ3xFsl0q');
-insert into USER (id, login, password) values (2, 'Ruslan', '$2a$12$RaTUUisCtQtY3yC3xeLEpuoN4bD8pXeeQiGM9dpDrw1qUrZ4O8WeO');
+insert into USER (id, login, password) values (1, 'aidar', '$2a$12$3Lk09dum3fQp5CAt3PYPK.TOGCIv2Kj3C.4oX.90Whn.ebD3hqylC');
+insert into USER (id, login, password) values (2, 'ruslan', '$2a$12$W05QIa90v1.KR8A/h/kiluajy4bhzbJXxz.IB5rupNTOHxqVca3O.');
 insert into USER (id, login, password) values (3, 'admin', '$2a$12$USRANxacKgzO.o24DBK9ke3zZj54/s8Gv1GpxJTuRjTu6cjgMbA2i');
 
-insert into ROLE (id, name) values (1, 'USER');
-insert into ROLE (id, name) values (2, 'MANAGER');
-insert into ROLE (id, name) values (3, 'ADMIN');
+insert into ROLE (id, name) values (1, 'ROLE_USER');
+insert into ROLE (id, name) values (2, 'ROLE_MANAGER');
+insert into ROLE (id, name) values (3, 'ROLE_ADMIN');
 
 insert into USER_ROLE (user_id, role_id) values (1, 1);
 insert into USER_ROLE (user_id, role_id) values (2, 2);

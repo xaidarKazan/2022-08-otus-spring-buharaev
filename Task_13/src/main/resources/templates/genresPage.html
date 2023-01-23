@@ -7,17 +7,29 @@
     <script type="text/javascript">
         window.genres = null;
         window.listTable = null;
+        window.isAlowedToEdite = false;
+        window.isAlowedToDelete = false;
 
-        function viewList() {
-          fetch('/api/genres')
-            .then((response) => response.json())
-            .then((list) => {
-                    window.genres = list;
-                    window.listTable = document.getElementById('listTable');
-                    for(genre of list) {
-                        addRow(genre);
-                    }
-                });
+        function getDataAndAlowedActions() {
+            fetch('api/genres/accessToEdit').then(resp => {
+                                                    if(resp.ok) {
+                                                        window.isAlowedToEdite = true;
+                                                        document.getElementById('addButton').style.display = 'inline-block';
+                                                    }
+                                                });
+            fetch('/api/genres/accessToDelete').then(resp => {
+                                                    if(resp.ok) {
+                                                        window.isAlowedToDelete = true;
+                                                    }
+                                                });            
+            fetch('/api/genres').then((response) => response.json())
+                                .then((list) => {
+                                        window.genres = list;
+                                        window.listTable = document.getElementById('listTable');
+                                        for(genre of list) {
+                                            addRow(genre);
+                                        }
+                                    });
         }
 
         function addRow(genre) {
@@ -47,9 +59,13 @@
                 }
 
                 a.appendChild(img);
-                td.appendChild(a);
+                if((window.isAlowedToEdite == true && i == 1) || (window.isAlowedToDelete == true && i == 2)) {
+                    td.appendChild(a);                    
+                }
             }
-            tr.appendChild(td);
+            if(window.isAlowedToEdite == true || window.isAlowedToDelete == true) {                                        
+                tr.appendChild(td);
+            }
             window.listTable.appendChild(tr);
         }
 
@@ -153,7 +169,7 @@
     </script>
 
 </head>
-<body onload="viewList()">
+<body onload="getDataAndAlowedActions()">
 <div id="container">
     <div id="header">Электронная библиотека</div>
     <div id="sidebar">
@@ -161,7 +177,7 @@
     </div>
     <div id="content">
         <div id="addB">
-            <a class="button" title="Добавить" onclick="form()">Добавить</a>
+            <a id="addButton" class="button" title="Добавить" onclick="form()" style="display: none;">Добавить</a>
         </div>
 
         <div id="list" style="display: block;">

@@ -1,6 +1,7 @@
 package ru.otus.homeWork.domain;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<User> employees = new HashSet<>();
 }
