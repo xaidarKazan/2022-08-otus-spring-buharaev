@@ -1,0 +1,30 @@
+spring:
+  main:
+    allow-circular-references: true
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: ALWAYS
+
+  data:
+    mongodb:
+      database: library
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/library
+    username: root
+    password: root
+
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    generate-ddl: false
+
+    hibernate:
+      ddl-auto: none
+
+    show-sql: false
