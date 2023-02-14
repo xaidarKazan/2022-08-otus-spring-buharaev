@@ -1,0 +1,300 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Электронная библиотека</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <script type="text/javascript">
+        window.books = null;
+        window.listTable = null;
+
+        function viewList() {
+          fetch('/api/books')
+            .then((response) => response.json())
+            .then((list) => {
+                    window.books = list;
+                    window.listTable = document.getElementById('listTable');
+                    for(book of list) {
+                        addRow(book);
+                    }
+                });
+        }
+
+        function addRow(book) { 
+
+            let tr = document.createElement('tr');
+            tr.setAttribute('id', `tabRowId_${book.id}`);
+            let td = document.createElement('td');
+            td.setAttribute('align', 'center');
+            td.innerHTML = book.id;
+            tr.appendChild(td);            
+            td = document.createElement('td');
+            td.setAttribute('align', 'left');
+            td.innerHTML = book.name;            
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('align', 'center');
+            td.innerHTML = book.publishingYear;            
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('align', 'center');
+            td.innerHTML = book.author.firstName + ' ' + book.author.lastName;            
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.setAttribute('align', 'center');
+            td.innerHTML = book.genre.name;            
+            tr.appendChild(td);
+            
+            td = document.createElement('td');
+            td.setAttribute('align', 'center');
+            for(let i = 1; i < 3; i++) {
+                let a = document.createElement('a');
+                a.style.cursor = 'pointer';
+                a.style.marginLeft = '10px';
+                let img = document.createElement('img');
+                if(i == 1) {
+                    a.setAttribute('onclick', `form(${book.id})`);
+                    img.setAttribute('src', 'pict/Edit.png');
+                }
+                else {
+                    a.setAttribute('onclick', `remove(${book.id})`);
+                    img.setAttribute('src', 'pict/Remove.png');
+                }
+
+                a.appendChild(img);
+                td.appendChild(a);
+            }
+            tr.appendChild(td);
+            window.listTable.appendChild(tr);
+        }
+
+        function form(id) {
+            changeVisibility('list');
+            cleanUpForm();
+            if(id && window.books) {
+                for(book of window.books) {
+                    if(book.id == id) {
+                        let bookId = document.getElementById('bookId');
+                        bookId.value = book.id;
+                        let bookName = document.getElementById('bookName');
+                        bookName.value = book.name;
+                        let bookPublishingYear = document.getElementById('bookPublishingYear');
+                        bookPublishingYear.value = book.publishingYear;
+                        authors(book.author.id);
+                        genres(book.genre.id);
+                    }
+                }
+            }
+            else {
+                authors();
+                genres();
+            }
+        }
+        
+        function authors(id) {
+            let authorId = document.getElementById('authorId');
+            fetch('/api/authors')
+                .then((response) => response.json())
+                .then((authors) => {
+                        authorId.innerHTML = '';
+                        let option;
+                        for(author of authors) {
+                            option = document.createElement('option');
+                            option.text = author.firstName + ' ' + author.lastName;
+                            option.value = author.id;
+                            if(id && id == author.id) {
+                                option.selected = "true";
+                            }
+                            authorId.appendChild(option);
+                        }
+                     });
+        }
+        
+        function genres(id) {
+            let genreId = document.getElementById('genreId');
+            fetch('/api/genres')
+            .then((response) => response.json())
+            .then((genres) => {
+                    genreId.innerHTML = '';
+                    let option;
+                    for(genre of genres) {
+                        option = document.createElement('option');
+                        option.text = genre.name;
+                        option.value = genre.id;
+                        if(id && id == genre.id) {
+                            option.selected = "true";
+                        }
+                        genreId.appendChild(option);
+                    }
+                });
+        }
+
+        function remove(id) {
+            fetch(`/api/book/${id}`, { method: 'DELETE' })
+                .then((response) => {
+                    if(response.ok) {
+                        let tr = document.getElementById(`tabRowId_${id}`);
+                        tr.remove();
+                    }
+                    else {
+                        console.error('There was an error!');
+                    }
+                });
+        }
+
+        function action(act) {
+            switch(act) {
+                case 'SAVE':
+                    let bookId = document.getElementById('bookId').value,
+                        bookName = document.getElementById('bookName').value,
+                        bookPublishingYear = document.getElementById('bookPublishingYear').value,
+                        authorId = document.getElementById('authorId').value,
+                        genreId = document.getElementById('genreId').value;
+                    let book = { "id": bookId, 
+                                 "name": bookName, 
+                                 "publishingYear": bookPublishingYear,
+                                 "author": {"id": authorId}, 
+                                 "genre": {"id": genreId} 
+                               };
+                    
+                    if(bookId) {
+                       fetch('/api/book', { method: 'PUT',
+                                               headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                                               body: JSON.stringify(book)
+                                             })
+                        .then((response) => response.json())
+                        .then((book) => {
+                            let modifyRow = document.getElementById(`tabRowId_${book.id}`).childNodes;
+                            modifyRow[0].innerHTML = book.id;
+                            modifyRow[1].innerHTML = book.name;
+                            modifyRow[2].innerHTML = book.publishingYear;
+                            modifyRow[3].innerHTML = book.author.firstName + ' ' + book.author.lastName;
+                            modifyRow[4].innerHTML = book.genre.name;  
+                            let index = -1;
+                            for(let i = 1; i < window.books.length; i++) {
+                                if(bookId == window.books[i].id) index = i;
+                            }
+                            if(index !== -1) {
+                                window.books.splice(index, 1);
+                            }
+                            window.books.push(book);
+                            changeVisibility('form');
+                        });
+                    }
+                    else {
+                        fetch('/api/book', { method: 'POST',
+                                               headers: { 'Content-Type': 'application/json;charset=utf-8' },
+                                               body: JSON.stringify(book)
+                                             })
+                        .then((response) => response.json())
+                        .then((book) => {
+                            window.books.push(book);
+                            addRow(book);
+                            changeVisibility('form');
+                        });
+                    }
+
+                    break;
+                case 'BACK':
+                    changeVisibility('form');
+                    break;
+            }
+        }
+
+        function cleanUpForm() {
+            document.getElementById('bookId').value = '';
+            document.getElementById('bookName').value = '';
+            document.getElementById('bookPublishingYear').value = '';
+            document.getElementById('authorId').innerHTML = '';
+            document.getElementById('genreId').innerHTML = '';
+        }
+
+        function changeVisibility(blockId) {
+            let list = document.getElementById('list'),
+                form = document.getElementById('form')
+                addB = document.getElementById('addB');
+            switch(blockId) {
+                case 'list':
+                    list.style.display = 'none';
+                    form.style.display = 'block';
+                    addB.style.display = 'none';
+                    break;
+                case 'form':
+                    list.style.display = 'block';
+                    form.style.display = 'none';
+                    addB.style.display = 'block';
+                    break;
+            }
+        }
+    </script>
+
+</head>
+<body onload="viewList()">
+<div id="container">
+    <div id="header">Электронная библиотека</div>
+    <div id="sidebar">
+        <p><a class="button" href="/">Главная</a></p>
+    </div>
+    <div id="content">
+        <div id="addB">
+            <a class="button" title="Добавить" onclick="form()">Добавить</a>
+        </div>
+
+        <div id="list" style="display: block;">
+            <table id="listTable" border="1" width="100%" >
+                <col width="5%" valign="top">
+                <col width="40%" valign="top">
+                <col width="10%" valign="top">
+                <col width="20%" valign="top">
+                <col width="15%" valign="top">
+                <col width="10%" valign="top">
+                <tr>
+                    <th>№</th>
+                    <th>Название</th>
+                    <th>Год</th>
+                    <th>Автор</th>
+                    <th>Жанр</th>
+                    <th></th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="form" style="display: none;">
+            <table id="formTable">
+                <tr hidden>
+                    <td><label>ID</label></td>
+                    <td><input id="bookId" type="text" /></td>
+                </tr>
+                <tr>
+                    <td><label>Название</label></td>
+                    <td><input id="bookName" type="text" required /></td>
+                </tr>
+                <tr>
+                    <td><label>Год выпуска</label></td>
+                    <td><input id="bookPublishingYear" type="number" required /></td>
+                </tr>
+                <tr>
+                    <td><label>Автор</label></td>
+                    <td>
+                        <select id="authorId" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Жанр</label></td>
+                    <td>
+                        <select id="genreId" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick="action('SAVE')">Сохранить</button>
+                        <button onclick="action('BACK')">Отменить</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

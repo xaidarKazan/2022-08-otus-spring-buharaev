@@ -1,0 +1,45 @@
+    body {
+        font: 10pt Arial, Helvetica, sans-serif; /* Шрифт на веб-странице */
+        background: #e1dfb9; /* Цвет фона */
+    }
+    p {
+        font-size: 1.1em; /* Размер шрифта */
+        color: #800040; /* Цвет текста */
+        margin-top: 0; /* Отступ сверху */
+    }
+    #container {
+        height: 100%;
+        width: 1000px;  /*Ширина слоя */
+        margin: 2% 20%; /* Выравнивание по центру */
+        background: #f0f0f0; /* Цвет фона левой колонки */
+    }
+    #header {
+        font-size: 2.2em; /* Размер текста */
+        text-align: center; /* Выравнивание по центру */
+        padding: 5px; /* Отступы вокруг текста */
+        background: #8fa09b; /* Цвет фона шапки */
+        color: #ffe; /* Цвет текста */
+    }
+    #sidebar {
+        margin-top: 10px;
+        width: 110px; /* Ширина слоя */
+        padding: 0 10px; /* Отступы вокруг текста */
+        float: left; /* Обтекание по правому краю */
+    }
+    #content {
+        margin-left: 130px; /* Отступ слева */
+        padding: 10px; /* Поля вокруг текста */
+        background: #f0f0f0; /* Цвет фона правой колонки */
+    }
+    .button{
+       display: inline-block;
+       cursor: pointer;
+       font-size:10px;
+       text-decoration:none;
+       padding:6px 12px;
+       color:#ffe;
+       background:#8fa09b;
+       border-radius:13px;
+       border:3px solid #8fa09b;
+       margin: 5px 5px;
+    }
